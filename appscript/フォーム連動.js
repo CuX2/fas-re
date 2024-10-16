@@ -1,3 +1,12 @@
+  // Firestoreの初期化（認証情報を必要に応じて記載）
+  function initializeFirestore() {
+    return FirestoreApp.getFirestore(
+      FIREBASE_CONFIG.client_email,
+      FIREBASE_CONFIG.private_key,
+      FIREBASE_CONFIG.project_id
+    );
+  }
+
 // スプレッドシートの「フォームの回答」シートからデータを取得して処理する関数
 function onFormSubmit() {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -109,11 +118,3 @@ function onFormSubmit() {
     return newSerial;
   }
   
-  // Firestoreの初期化（認証情報を必要に応じて記載）
-  function initializeFirestore() {
-    return FirestoreApp.getFirestore(
-      FIREBASE_CONFIG.client_email,
-      FIREBASE_CONFIG.private_key,
-      FIREBASE_CONFIG.project_id
-    );
-  }

@@ -128,3 +128,17 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Firebase debug and log files
+firebase-debug.log
+ui-debug.log
+
+
+# Firebase executable files
+firebase-tools-instant-win.exe
+
+# Node modules folder
+node_modules/
+
+# Firebase CLI settings file
+.firebaseerc

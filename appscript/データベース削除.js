@@ -1,3 +1,12 @@
+  // Firestore の初期化
+  function initializeFirestore() {
+    return FirestoreApp.getFirestore(
+      FIREBASE_CONFIG.client_email,
+      FIREBASE_CONFIG.private_key,
+      FIREBASE_CONFIG.project_id
+    );
+  }
+
 // カスタムHTMLダイアログを作成
 function showCustomAlert() {
     const htmlOutput = HtmlService.createHtmlOutputFromFile('AlertDialog')
@@ -80,11 +89,3 @@ function showCustomAlert() {
     }
   }
   
-  // Firestore の初期化
-  function initializeFirestore() {
-    return FirestoreApp.getFirestore(
-      FIREBASE_CONFIG.client_email,
-      FIREBASE_CONFIG.private_key,
-      FIREBASE_CONFIG.project_id
-    );
-  }

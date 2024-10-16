@@ -5,10 +5,12 @@ function syncCheckedStoreInfoToFirestore() {
   const logSheet = ss.getSheetByName("ログ記録"); // ログシート取得
   const storeSheet = ss.getSheetByName("店舗情報");
 
-  const lastRow = storeSheet.getLastRow();  // 最終行を取得
-  const dataRange = storeSheet.getRange(2, 1, lastRow - 1, 5); // データ範囲を取得
+  // A列とB列の両方が入力されている行を取得（空白を除く）
+  const lastDataRow = storeSheet.getRange('A:B').getValues().filter(row => row[0] && row[1]).length;
+
+  const dataRange = storeSheet.getRange(2, 1, lastDataRow, 3); // A列〜C列のデータを取得
   const data = dataRange.getValues();  // データを取得
-  const checkboxes = storeSheet.getRange(2, 4, lastRow - 1, 1).getValues();  // チェックボックスの状態を取得
+  const checkboxes = storeSheet.getRange(2, 4, lastDataRow, 1).getValues();  // D列のチェックボックスの状態を取得
 
   Logger.log(`データ: ${JSON.stringify(data)}`);
   Logger.log(`チェックボックスの状態: ${JSON.stringify(checkboxes)}`);
@@ -30,8 +32,8 @@ function syncCheckedStoreInfoToFirestore() {
       isAnyChecked = true;
       storeDataList.push({ storeId, name: storeName, address: storeAddress });
 
-      storeSheet.getRange(index + 2, 4).setValue(false);
-      storeSheet.getRange(index + 2, 5).setValue(now);
+      storeSheet.getRange(index + 2, 4).setValue(false); // チェックを外す
+      storeSheet.getRange(index + 2, 5).setValue(now);    // 最終同期時間を更新
     }
   });
 
@@ -42,6 +44,7 @@ function syncCheckedStoreInfoToFirestore() {
   }
 
   if (storeDataList.length > 0) {
+    Logger.log(`同期するデータリスト: ${JSON.stringify(storeDataList)}`);
     updateFirestoreIndividually(storeDataList);
   } else {
     Logger.log("同期対象のデータがありません。");
@@ -51,6 +54,7 @@ function syncCheckedStoreInfoToFirestore() {
   Logger.log('Firestore への更新が完了しました。');
   logToSheet(logSheet, "syncCheckedStoreInfoToFirestore", 'Firestore への更新が完了しました。');
 }
+
 
 // 個別にFirestoreを更新
 function updateFirestoreIndividually(storeDataList) {

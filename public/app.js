@@ -101,5 +101,3 @@ closeTabButton.addEventListener('click', function() {
 
 // Initialize the page when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', init);
-
-//git確認
